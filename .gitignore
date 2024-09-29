@@ -129,6 +129,8 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+GOIT-CS-HW-06/
+.GOIT-CS-HW-06
 
 # Spyder project settings
 .spyderproject

@@ -1,0 +1,18 @@
+# Використовуємо офіційний образ Python
+FROM python:3.11-slim
+
+# Встановлюємо робочу директорію всередині контейнера
+WORKDIR /app
+
+# Копіюємо всі файли сокет-сервера
+COPY socket_server.py /app/
+COPY requirements.txt /app/
+
+# Встановлюємо залежності
+RUN pip install -r requirements.txt
+
+# Відкриваємо порт 5000 для сокет-сервера
+EXPOSE 5000
+
+# Команда для запуску сокет-сервера
+CMD ["python", "socket_server.py"]

@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  web:
+    build: .
+    container_name: web_server
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - socket_server
+    volumes:
+      - .:/app
+    networks:
+      - app-network
+    restart: always
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo_db
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.adminCommand(\"ping\")' || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    restart: always
+
+  socket_server:
+    build:
+      context: .
+      dockerfile: Dockerfile.socket
+    container_name: socket_server
+    ports:
+      - "5000:5000"
+    networks:
+      - app-network
+    restart: always
+
+volumes:
+  mongo_data:
+
+networks:
+  app-network:
